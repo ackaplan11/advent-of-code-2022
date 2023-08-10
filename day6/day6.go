@@ -9,6 +9,7 @@ func main() {
 	fmt.Println("Advent of Code")
 	datastream, _ := ioutil.ReadFile("day6/input.txt")
 	fmt.Println(findStartOfPacket(datastream))
+	fmt.Println(findStartOfMessage(datastream))
 }
 
 func findStartOfPacket(datastream []byte) int {
@@ -28,6 +29,22 @@ func findStartOfPacket(datastream []byte) int {
 	return charsProcessed
 }
 
+func findStartOfMessage(datastream []byte) int {
+	charsProcessed := 13
+	buffer := datastream[:13]
+	for _, char := range datastream[13:] {
+		charsProcessed += 1
+		if len(buffer) == 13 {
+			buffer = append(buffer, char)
+		} else {
+			buffer = append(buffer[1:], char)
+		}
+		if !hasDuplicates(buffer) {
+			return charsProcessed
+		}
+	}
+	return charsProcessed
+}
 func hasDuplicates(slice []byte) bool {
 	seen := make(map[byte]bool)
 
