@@ -30,7 +30,7 @@ func main() {
 				fmt.Println("Error:", err)
 				return
 			} else {
-				moveCrates(crates, count, starIdx, endIdx)
+				moveCrates2(crates, count, starIdx, endIdx)
 			}
 		}
 	}
@@ -71,4 +71,13 @@ func moveCrates(crates map[int][]string, count int, startIdx int, endIdx int) {
 		crates[startIdx] = crates[startIdx][:n]       //remove element from top of origin stack
 		movesLeft -= 1
 	}
+}
+
+func moveCrates2(crates map[int][]string, count int, startIdx int, endIdx int) {
+	n := len(crates[startIdx]) - count
+	slice := crates[startIdx][n:]
+	for _, elem := range slice {
+		crates[endIdx] = append(crates[endIdx], elem)
+	}
+	crates[startIdx] = crates[startIdx][:n]
 }
