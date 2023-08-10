@@ -45,15 +45,14 @@ func findStartOfMessage(datastream []byte) int {
 	}
 	return charsProcessed
 }
+
 func hasDuplicates(slice []byte) bool {
 	seen := make(map[byte]bool)
-
 	for _, b := range slice {
 		if seen[b] {
 			return true // Duplicate found
 		}
 		seen[b] = true
 	}
-
 	return false // No duplicates found
 }
