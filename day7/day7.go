@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -68,7 +69,7 @@ func main() {
 	calculateSize(curr)
 	var totalSize int
 	sumSizes(&totalSize, curr)
-	fmt.Println(totalSize)
+	fmt.Println(findSizeToDelete(&root))
 }
 
 func calculateSize(node *Node) int {
@@ -92,4 +93,32 @@ func sumSizes(totalSize *int, node *Node) {
 	for _, child := range node.Children {
 		sumSizes(totalSize, child)
 	}
+}
+
+func findSizeToDelete(root *Node) int {
+	minSize := math.Abs(float64(40000000 - root.Size))
+	deletedSize := root.Size
+	curr := root
+	queue := convertMapToSlice(root.Children)
+	for len(queue) > 0 {
+		curr = queue[0]
+		queue = queue[1:]
+		if float64(curr.Size) > minSize && curr.Size < deletedSize {
+			deletedSize = curr.Size
+		}
+		addToQueue := convertMapToSlice(curr.Children)
+		for _, child := range addToQueue {
+			queue = append(queue, child)
+		}
+
+	}
+	return deletedSize
+}
+
+func convertMapToSlice(children map[string]*Node) []*Node {
+	queue := []*Node{}
+	for _, value := range children {
+		queue = append(queue, value)
+	}
+	return queue
 }
